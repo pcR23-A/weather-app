@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperatura Atual</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Optional: Custom CSS -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Temperatura Atual</h2>
+                        
+                        <!-- Weather Search Form -->
+                        <form action="/" method="post" class="d-flex">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                <input 
+                                    type="text" 
+                                    name="city" 
+                                    id="city" 
+                                    class="form-control" 
+                                    placeholder="Insira o nome da cidade" 
+                                    required
+                                >
+                                
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Pesquisar
+                                </button>
+                            </div>
+                            <!-- Error Handling -->
+                            {% if city_error %}
+                            <div class="alert alert-warning mt-3 text-center">
+                                <p>{{ city_error }}</p>
+                            </div>
+                            {% endif %}
+                        </form>
+                                                <!-- Weather Results -->
+                        <div id="weather-results" class="mt-4 text-center">
+                            {% if weather_data %}
+                                {% if weather_data.error %}
+                                    <div class="alert alert-danger">
+                                        <p>{{ weather_data.error }}</p>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-info">
+                                        <h4>{{ weather_data.city }}</h4>
+                                        <p>Temperatura: {{ weather_data.temperature }}°C</p>
+                                        <p>Sensação Térmica: {{ weather_data.feels_like }}°C</p>
+                                        <p>Umidade: {{ weather_data.humidity }}%</p>
+                                        <p>Pressão: {{ weather_data.pressure }} hPa</p>
+                                        <p>Velocidade do Vento: {{ weather_data.wind_speed }} m/s</p>
+                                        {% if weather_data.wind_direction %}
+                                            <p>Direção do Vento: {{ weather_data.wind_direction }}</p>
+                                        {% endif %}
+                                        <p>{{ weather_data.description }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
