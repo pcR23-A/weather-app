@@ -2,8 +2,8 @@ from django.shortcuts import render
 import requests
 import os
 
-apiKeyWeather = os.environ["forecast-api-key"]
-apiKeyCoord = os.environ["coord-api-key"]
+apiKeyWeather = 1 #os.environ["forecast-api-key"]
+apiKeyCoord = 1 #os.environ["coord-api-key"]
 
 def index(request):
     return render(request, 'index.html')
